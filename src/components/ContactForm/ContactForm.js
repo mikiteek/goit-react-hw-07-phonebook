@@ -26,17 +26,30 @@ class ContactForm extends Component {
       return;
     if (contacts.findIndex(contact => contact.name === name) !== -1) {
       onShowNotify();
+      this.clearInputClearState();
       return;
     }
     onSubmit({name, number});
+    this.clearInputClearState();
   }
+
+  clearInputClearState = () => {
+    this.setState({name: "", number: ""});
+    this.clearInputContactsData();
+  }
+
+  clearInputContactsData = () => {
+    const inputRefs = document.querySelectorAll(".js-form-input");
+    inputRefs.forEach(inputItem => inputItem.value = "");
+  }
+
   handleChange = event => {
     const {name, value} = event.target;
     this.setState({[name]: value});
   }
 
   render() {
-    const inputStyles = [styles.formElement, styles.formInput].join(" ");
+    const inputStyles = [styles.formElement, styles.formInput, "js-form-input"].join(" ");
     return (
       <section className={styles.sectionContacts}>
         <CSSTransition in={true} appear={true} timeout={500} classNames="ContactFormTitle" unmountOnExit>
